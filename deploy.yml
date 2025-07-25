@@ -1,0 +1,41 @@
+name: Deploy
+on: 
+  push:
+    branches: [ main ]  # Only trigger on main branch pushes
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4  # Updated to v4
+      
+      - name: Login to Docker Hub
+        if: github.ref == 'refs/heads/main'
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_TOKEN }}
+      
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: ${{ github.ref == 'refs/heads/main' }}
+          tags: |
+            your-dockerhub-username/digitwin-rag:latest
+            your-dockerhub-username/digitwin-rag:${{ github.sha }}
+      
+      - name: Deploy to server
+        if: github.ref == 'refs/heads/main'
+        env:
+          SSH_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}
+        run: |
+          echo "$SSH_KEY" > key.pem
+          chmod 600 key.pem
+          ssh -i key.pem -o StrictHostKeyChecking=no $REMOTE_USER@$REMOTE_HOST \
+          "docker pull your-dockerhub-username/digitwin-rag:latest && \
+           docker stop digitwin-rag || true && \
+           docker rm digitwin-rag || true && \
+           docker run -d -p 8501:8501 --name digitwin-rag --env-file .env your-dockerhub-username/digitwin-rag:latest"
