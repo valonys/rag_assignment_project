@@ -1,13 +1,32 @@
-streamlit>=1.32.0
-python-dotenv>=1.0.0
-PyPDF2>=3.0.0
-langchain>=0.1.0
-langchain-community>=0.0.1
-sentence-transformers>=2.2.2
-together>=0.2.0
-cachetools>=5.3.0
-backoff>=2.2.1
-openai>=1.0.0
-transformers>=4.30.0
-accelerate>=0.20.0
-torch>=2.0.0
+# Core Packages
+streamlit==1.36.0
+python-dotenv==1.0.0
+requests==2.31.0
+
+# Document Processing
+PyPDF2==3.0.0
+pypdf==3.0.1
+python-docx==0.8.11
+openpyxl==3.1.2
+
+# Data Handling
+pandas==2.1.4
+
+# AI/ML Core
+torch==2.2.1
+transformers==4.38.2
+accelerate==0.27.2
+sentencepiece==0.2.0
+sentence-transformers==2.2.2
+faiss-cpu==1.7.4
+
+# LLM & Cloud
+openai==1.0.0
+cerebras-cloud-sdk==1.0.0
+tiktoken==0.5.1
+huggingface-hub==0.20.3
+
+# LangChain Ecosystem
+langchain==0.1.0
+langchain-community==0.0.13
+langchain-text-splitters==0.0.1
