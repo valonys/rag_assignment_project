@@ -22,7 +22,7 @@ faiss-cpu==1.7.4
 
 # LLM & Cloud
 openai==1.0.0
-cerebras-cloud-sdk
+cerebras_cloud_sdk
 tiktoken==0.5.1
 huggingface-hub==0.20.3
 
